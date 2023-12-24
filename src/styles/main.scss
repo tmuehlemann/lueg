@@ -1,0 +1,35 @@
+@import "reset";
+@import "font";
+@import "vars";
+
+
+// global styles
+
+html {
+  font-size: 20px;
+  font-family: Geist, Inter, Manrope, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: 1rem;
+}
+
+.max-reading {
+  max-width: 65ch;
+}
+
+.rounded {
+  border-radius: .4rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.container {
+  container-type: inline-size;
+}

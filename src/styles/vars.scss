@@ -1,0 +1,42 @@
+// helper function to get the rgb values of a color
+@function col-rgb($color) {
+  $red: red($color);
+  $green: green($color);
+  $blue: blue($color);
+  @return unquote('#{$red}, #{$green}, #{$blue}');
+}
+
+
+// color variables
+$fg:#000;
+$bg:#fff;
+$primary: #282c34;
+
+
+// ring variables
+$ring-distance: 2px;
+$ring-inset: 0 0 0 $ring-distance var(--bg);
+$ring-size: 2px;
+
+
+// setting up the css variables
+:root {
+  --fg: #{$fg};
+  --bg: #{$bg};
+  --fg-rgb: #{col-rgb($fg)};
+  --bg-rgb: #{col-rgb($bg)};
+
+  --primary: #{$primary};
+  --primary-rgb: #{col-rgb($primary)};
+
+  // ring may be used for focus states
+  --ring: #{$ring-inset}, 0 0 0 #{$ring-distance + $ring-size} var(--primary);
+  --border: 2px solid rgba(var(--fg-rgb), .1);
+
+  @media (prefers-color-scheme: dark) {
+      --fg: #{$bg};
+      --bg: #{$fg};
+      --fg-rgb: #{col-rgb($bg)};
+      --bg-rgb: #{col-rgb($fg)};
+  }
+}
