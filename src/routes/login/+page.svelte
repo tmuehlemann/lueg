@@ -35,7 +35,11 @@
             {#if form?.error}
                 <ul class="notice-error rounded">
                     {#each form.errors as error}
-                        <li><b>{error.field}:</b> {error.message}</li>
+                        <li>
+                            {#if error.field}
+                                <b>{error.field}:</b>
+                            {/if}
+                            {error.message}</li>
                     {/each}
                 </ul>
             {/if}

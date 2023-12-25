@@ -1,9 +1,16 @@
 <script lang="ts">
-    export let data
+    import {enhance} from '$app/forms'
+    import Button from "../components/ui/form/Button.svelte";
+    import type { PageData } from './$types';
+    export let data : PageData
+
 </script>
 
 <div class="wrap">
-    <h1>Welcome to Lueg️ 👀</h1>
+    <h1>Welcome {data.user.username}</h1>
+    <p>
+        this is Lueg️ 👀
+    </p>
 
     {#if data?.users}
         <h2>Users</h2>
@@ -11,11 +18,15 @@
 
         {#each data.users as user}
             <li class="user">
-                {user.name}
+                {user.username}
             </li>
         {/each}
         </ul>
     {/if}
+
+    <form method="post" action="?/logout" use:enhance>
+        <Button type="submit" variant="outline">Sign out</Button>
+    </form>
 
 </div>
 

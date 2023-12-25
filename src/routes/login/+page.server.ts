@@ -1,6 +1,8 @@
 import type {Actions} from "@sveltejs/kit";
 import {z} from "zod";
-import {fail} from "@sveltejs/kit";
+import {fail, redirect} from "@sveltejs/kit";
+import {login} from "$lib/server/user";
+import {LuciaError} from "lucia";
 
 
 const loginSchema = z.object({
@@ -9,7 +11,7 @@ const loginSchema = z.object({
 })
 
 export const actions : Actions = {
-    login: async ({request}) => {
+    login: async ({request, locals}) => {
         const formData = Object.fromEntries(await request.formData())
 
         const loginData = loginSchema.safeParse(formData)
@@ -24,14 +26,16 @@ export const actions : Actions = {
             return fail(400, {error: true, errors})
         }
 
-
-        // if (!Auth.login(loginData.data.username, loginData.data.password)) {
-        //     return fail(400, {error: true, errors: [{field: "", message: "Username or password is incorrect"}]})
-        // }
-
-        return {
-            success: true
+        if(!await login(loginData.data.username, loginData.data.password, locals)) {
+            return fail(400, {
+                error: true,
+                errors: [{
+                    message: "Incorrect username or password"
+                }]
+            });
         }
+
+        throw redirect(302, "/")
     }
 
 } satisfies Actions;

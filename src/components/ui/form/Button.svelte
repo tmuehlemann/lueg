@@ -19,6 +19,7 @@
   button {
     display: block;
     padding: .5rem 1rem;
+    cursor: pointer;
 
     &:focus {
       box-shadow: var(--ring);
