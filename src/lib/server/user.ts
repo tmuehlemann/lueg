@@ -2,6 +2,7 @@ import {auth} from "$lib/server/lucia";
 import Locals = App.Locals;
 import {LuciaError} from "lucia";
 import {fail, redirect} from "@sveltejs/kit";
+import {expoOut} from "svelte/easing";
 
 export async function createUser(username : string, password : string) {
 

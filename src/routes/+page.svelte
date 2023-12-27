@@ -24,10 +24,6 @@
         </ul>
     {/if}
 
-    <form method="post" action="?/logout" use:enhance>
-        <Button type="submit" variant="outline">Sign out</Button>
-    </form>
-
 </div>
 
 <style lang="scss">

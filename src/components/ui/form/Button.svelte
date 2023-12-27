@@ -9,10 +9,13 @@
 
 </script>
 
-<button
-        class={`rounded v-${variant} ${className}`}
+    <button
+        class={`btn rounded v-${variant} ${className}`}
+        {... $$restProps}
+        on:click
+        on:keydown
 >
-    <slot></slot>
+    <slot/>
 </button>
 
 <style lang="scss">
@@ -25,9 +28,14 @@
       box-shadow: var(--ring);
     }
 
+    &:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
     &.v-default {
-      background: var(--primary);
-      color: white;
+      background: var(--fg);
+      color: var(--bg);
     }
 
     &.v-outline {

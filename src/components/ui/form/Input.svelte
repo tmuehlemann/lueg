@@ -20,5 +20,10 @@
       &:focus {
         box-shadow: var(--ring);
       }
+      &::-webkit-file-upload-button {
+        background: transparent;
+        color: var(--fg);
+        border: none;
+      }
     }
 </style>

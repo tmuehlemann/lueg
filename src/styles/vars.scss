@@ -10,7 +10,8 @@
 // color variables
 $fg:#000;
 $bg:#fff;
-$primary: #282c34;
+//$primary: #282c34;
+$primary: #ff4400;
 
 
 // ring variables
@@ -30,7 +31,7 @@ $ring-size: 2px;
   --primary-rgb: #{col-rgb($primary)};
 
   // ring may be used for focus states
-  --ring: #{$ring-inset}, 0 0 0 #{$ring-distance + $ring-size} var(--primary);
+  --ring: #{$ring-inset}, 0 0 0 #{$ring-distance + $ring-size} var(--fg);
   --border: 2px solid rgba(var(--fg-rgb), .1);
 
   @media (prefers-color-scheme: dark) {

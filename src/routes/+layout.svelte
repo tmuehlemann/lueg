@@ -1,26 +1,41 @@
 <script>
     import '/src/styles/main.scss';
+    import Button from "../components/ui/form/Button.svelte";
+    import {enhance} from "$app/forms";
+
+    export let data;
 </script>
 
 <nav class="wrap">
     <div class="left">
         <ul>
-            <li>
-                <a href="/">Home</a>
-            </li>
-            <li>
-                <a href="/add">+</a>
-            </li>
+            {#if data?.user}
+                <li>
+                    <a class="rounded" href="/">Home</a>
+                </li>
+                <li>
+                    <a class="rounded" href="/add">add</a>
+                </li>
+
+            {/if}
         </ul>
     </div>
     <div class="right">
         <ul>
-            <li>
-                <a href="/settings">Settings</a>
-            </li>
-            <li>
-                <a href="/logout">Logout</a>
-            </li>
+            {#if data.user}
+                <li>
+                    <a class="rounded" href="/settings">Settings</a>
+                </li>
+                <li>
+                    <form method="post" action="/?/logout" use:enhance>
+                        <Button type="submit" variant="outline">Sign out</Button>
+                    </form>
+                </li>
+            {:else}
+                <li>
+                    <a class="rounded" href="/login">Sign in</a>
+                </li>
+            {/if}
         </ul>
     </div>
 </nav>
@@ -31,12 +46,20 @@
   nav {
     display: flex;
     justify-content: space-between;
+    padding: .8rem 1rem;
+    align-items: center;
     ul {
-      gap: 1rem;
       display: flex;
-      a:hover {
-        color: var(--primary);
-        text-decoration: underline;
+      align-items: center;
+      a {
+        margin: 0 .5rem;
+        padding: .5rem;
+        &:first-of-type{
+          margin-left: -.5rem;
+        }
+        &:hover {
+          background: rgba(var(--fg-rgb), 0.05);
+        }
       }
     }
   }
