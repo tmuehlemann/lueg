@@ -7,23 +7,17 @@
 </script>
 
 <div class="wrap">
-    <h1>Welcome {data.user.username}</h1>
-    <p>
-        this is Lueg️ 👀
-    </p>
+    <div class="grid">
 
-    movies:
     {#each data.movies as movie }
         <article>
             <a href="/film/{movie.id}">
                 <img src="https://image.tmdb.org/t/p/original/{movie.posterPath}" alt="poster for {movie.title}">
                 {movie.title}
-                <pre>
-                json: {JSON.stringify(movie, null, 2)}
-                </pre>
             </a>
         </article>
     {/each}
+    </div>
 </div>
 
 <style lang="scss">
@@ -33,5 +27,10 @@ li {
   &:not(:last-child){
     border-bottom: 1px solid rgba(var(--fg-rgb), .1);
   }
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
 }
 </style>

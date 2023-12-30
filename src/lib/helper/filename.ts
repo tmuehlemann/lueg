@@ -16,16 +16,16 @@ export function extractMovieName(filename : string) {
     .replace(/\./g, ' ')
 
     // check for quality and remove everything after it
-    .replace(/\s(?:480|720|1080|2160)[pi].*/, '')
+    .replace(/[({\[]?(?:480|720|1080|2160)[pi].*/, '')
+    .replace(/[({\[]?(?:HD|SD|4k).*/, '')
 
     // check for codec and remove everything after it
-    .replace(/\s(?:x264|x265|avc|hevc).*/, '');
+    .replace(/[({\[]?(?:x264|x265|avc|hevc).*/, '')
+    .trim();
 
-    console.log('zwischenresultat:', movieName)
 
     // count years in movie name
     const yearCount = (movieName.match(/(?:19|20)\d{2}/g) || []).length;
-    console.log(yearCount)
 
     let res = new Set<string>();
     if (movieName.length > 4) {
@@ -36,8 +36,13 @@ export function extractMovieName(filename : string) {
         }
 
         // remove only year if ends with year, includes if year is in brackets
-        movieName = movieName.replace(/[({\[]?(?:19|20)\d{2}[)}\]]?$/, '');
+        movieName = movieName.replace(/([({\[]?(?:19|20)\d{2}[)}\]]?$|[({\[](?:19|20)\d{2}[)}\]]).*/, '');
         res.add(movieName.trim())
+
+        // remove year and everything after it
+        movieName = movieName.replace(/([({\[]?(?:19|20)\d{2}[)}\]]?).*/, '');
+        res.add(movieName.trim())
+
     } else {
         res.add(movieName.trim())
     }
@@ -45,9 +50,28 @@ export function extractMovieName(filename : string) {
     return Array.from(res);
 }
 
-export function extractMovieYear(filename : string) {
-    const regex = /\b(?:[A-Z][a-z]*\.(?:[A-Z][a-z]*\.)*(\d{4}))\b/;
-    const match = filename.match(regex);
+export function extractMovieInfo(filename : string) {
+    const names = extractMovieName(filename);
 
-    return match ? match[1] : null;
+    const year = new Set<number>();
+
+    names.forEach(n => {
+        const yearMatch = n.match(/(?:19|20)\d{2}/g);
+        if (yearMatch) {
+            yearMatch.forEach(y => year.add(parseInt(y)));
+        }
+    })
+
+    // remove all years in the future
+    const currentYear = new Date().getFullYear();
+    Array.from(year).forEach(y => {
+        if (y > currentYear) {
+            year.delete(y);
+        }
+    })
+
+    return {
+        names,
+        years: Array.from(year).reverse()
+    }
 }

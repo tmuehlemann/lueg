@@ -1,8 +1,8 @@
 <script type="ts">
 
     import Button from "../../../components/ui/form/Button.svelte";
-    import {Play, PlaySquare, Popcorn} from "lucide-svelte";
-    import ColorThief from "colorthief"
+    import {Play} from "lucide-svelte";
+    import {onMount} from "svelte";
 
     export let data
 
@@ -16,6 +16,15 @@
     // todo: extract from backdrop image
     const fg = '#fff'
     const bg = '#000'
+
+    onMount(() => {
+        const root = document.documentElement;
+
+        root.style.setProperty('--spacer-height', '0');
+        return () => {
+            root.style.removeProperty('--spacer-height')
+        }
+    })
 
 </script>
 
@@ -34,13 +43,13 @@
             <h1 class="pb1">
                 {movie.title}
             </h1>
-            {#if movie.title !== movie.originalTitle}
                 <h2 class="pb1">
                     ({movie.releaseDate.getFullYear()})
-                    {movie.originalTitle}
-                    directed by ?
+                    {#if movie.title !== movie.originalTitle}
+                        {movie.originalTitle}
+                    {/if}
+                    <!-- directed by ?-->
                 </h2>
-            {/if}
 
             <ul class="pills pb1">
                 {#each movie.genres as genre}

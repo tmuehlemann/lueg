@@ -37,7 +37,7 @@ DB_DATABASE='lueg'
 ```bash
 npm run db:migrate
 ```
-4. Seed the database with some sample data:
+4. [Seed](https://en.wikipedia.org/wiki/Database_seeding) the database with some sample data:
 ```bash
 npm run db:seed
 ```

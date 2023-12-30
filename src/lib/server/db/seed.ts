@@ -15,9 +15,9 @@ if (args.includes('--clean') || process.env.npm_config_clean) {
     await db.delete(key)
     await db.delete(user)
     await db.delete(fileUpload)
+    await db.delete(movieToGenre)
     await db.delete(movie)
     await db.delete(genre)
-    await db.delete(movieToGenre)
 }
 
 console.log('seeding:')

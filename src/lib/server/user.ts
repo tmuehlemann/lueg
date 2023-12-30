@@ -3,6 +3,7 @@ import Locals = App.Locals;
 import {LuciaError} from "lucia";
 import {fail, redirect} from "@sveltejs/kit";
 import {expoOut} from "svelte/easing";
+import {db} from "$lib/server/db/db";
 
 export async function createUser(username : string, password : string) {
 
@@ -16,6 +17,16 @@ export async function createUser(username : string, password : string) {
             username
         }
     })
+}
+
+export async function getUserByUsername(username: string) {
+    const dbUser = await db.query.user.findFirst({
+        where: (user, {eq}) => eq(user.username, username)
+    })
+
+    if (!dbUser?.id) throw new Error("User not found")
+
+    return auth.getUser(dbUser.id)
 }
 
 export async function login(username : string, password : string, locals : Locals) : Promise<boolean> {

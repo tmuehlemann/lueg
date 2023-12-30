@@ -8,6 +8,8 @@ import { writeFile } from 'fs/promises';
 import {extractMovieName} from "$lib/helper/filename";
 import {number, string, z, ZodError} from "zod";
 import {publishMovie} from "$lib/server/movie/publish";
+import {LIBRARY_PATH} from '$env/static/private'
+import {createFileUpload, writeFileUpload} from "$lib/server/filesystem/fileupload";
 
 export const load = (async ({locals}) => {
     const {user} = await authenticated(locals)
@@ -38,11 +40,10 @@ export const actions : Actions = {
             })
         }
 
-        const path = `static/library/${file.name}`;
+        const path = file.name;
 
-        await writeFile(path, Buffer.from(await file.arrayBuffer()));
+        const fileUploadTable = await writeFileUpload(path, file, user)
 
-        const fileUploadTable = await db.insert(fileUpload).values({ path, uploaderId: user.userId });
         console.log(fileUploadTable)
 
         return {
@@ -50,7 +51,7 @@ export const actions : Actions = {
             data: {
                 movieName: extractMovieName(file.name),
                 file : {
-                    path: path,
+                    path: LIBRARY_PATH + path,
                     type: file.type,
                     size: file.size,
                     uploader: user.username,
