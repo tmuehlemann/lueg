@@ -1,5 +1,5 @@
 import {db} from "$lib/server/db/db";
-import {key, session, user} from "$lib/server/db/schema";
+import {fileUpload, key, movie, session, user} from "$lib/server/db/schema";
 import {exit} from "process";
 import {auth} from "$lib/server/lucia"
 import {createUser} from "$lib/server/user";
@@ -12,11 +12,15 @@ if (args.includes('--clean') || process.env.npm_config_clean) {
     await db.delete(session)
     await db.delete(key)
     await db.delete(user)
+    await db.delete(fileUpload)
+    await db.delete(movie)
 }
 
 console.log('seeding ...')
 
 const user = await createUser("admin", "password")
+const user2 = await createUser("john", "password")
+const user3 = await createUser("jane", "password")
 
 console.log('done')
 exit(0)

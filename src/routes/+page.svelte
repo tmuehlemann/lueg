@@ -11,19 +11,6 @@
     <p>
         this is Lueg️ 👀
     </p>
-
-    {#if data?.users}
-        <h2>Users</h2>
-        <ul>
-
-        {#each data.users as user}
-            <li class="user">
-                {user.username}
-            </li>
-        {/each}
-        </ul>
-    {/if}
-
 </div>
 
 <style lang="scss">

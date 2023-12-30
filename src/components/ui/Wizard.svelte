@@ -59,20 +59,20 @@
     </ul>
 </header>
 
-<slot {multi} />
+<slot {multi} {prev} {next} {setCurrent} />
 
-<div class="footer">
-    <Button on:click={prev}
-            disabled={current === 0}
-    >
-        prev
-    </Button>
-    <Button on:click={next}
-            disabled={current === Object.keys($multi).length - 1}
-    >
-        next
-    </Button>
-</div>
+<!--<div class="footer">-->
+<!--    <Button on:click={prev}-->
+<!--            disabled={current === 0}-->
+<!--    >-->
+<!--        prev-->
+<!--    </Button>-->
+<!--    <Button on:click={next}-->
+<!--            disabled={current === Object.keys($multi).length - 1}-->
+<!--    >-->
+<!--        next-->
+<!--    </Button>-->
+<!--</div>-->
 
 <style lang="scss">
 

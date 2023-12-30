@@ -9,20 +9,21 @@
 
 </script>
 
-    <button
-        class={`btn rounded v-${variant} ${className}`}
-        {... $$restProps}
-        on:click
-        on:keydown
+<button
+    class={`btn rounded v-${variant} ${className}`}
+    {... $$restProps}
+    on:click
+    on:keydown
 >
     <slot/>
 </button>
 
 <style lang="scss">
   button {
-    display: block;
     padding: .5rem 1rem;
     cursor: pointer;
+    display: flex;
+    gap: .5rem;
 
     &:focus {
       box-shadow: var(--ring);

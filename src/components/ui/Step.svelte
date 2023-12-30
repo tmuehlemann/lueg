@@ -15,7 +15,6 @@
 
     multi.subscribe(m => {
         visible = m[name]
-        console.log(name, 'is', visible? 'visible' : 'hidden')
     })
 
 </script>
@@ -26,3 +25,10 @@
         <slot />
     </div>
 {/if}
+
+<style lang="scss">
+    h2 {
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+    }
+</style>
