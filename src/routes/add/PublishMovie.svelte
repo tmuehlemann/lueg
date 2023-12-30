@@ -10,6 +10,7 @@
 </script>
 
 <ul class="summary">
+    {#if uploadedFile?.id}
     <li>
         <h3>file</h3>
         <section>
@@ -25,6 +26,13 @@
             <div class="value">{uploadedFile.type}</div>
         </section>
     </li>
+    {:else}
+    <li class="disabled">
+        <h3>file</h3>
+        <section>
+            no file selected. Go back and select a file.
+        </section>
+    {/if}
     {#if selectedMovie?.title}
         <li>
             <h3>metadata</h3>
