@@ -49,3 +49,13 @@ export const movieSchema = z.object({
 })
 
 export type TmdbMovie = z.infer<typeof movieSchema>
+
+
+export const genreSchema = z.object({
+    id: z.number().positive().int(),
+    name: z.string(),
+});
+export const genreListSchema = z.object({
+    genres: z.array(genreSchema),
+});
+export type TmdbGenre = z.infer<typeof genreSchema>

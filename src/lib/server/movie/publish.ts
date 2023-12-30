@@ -1,5 +1,5 @@
 import {db} from "$lib/server/db/db";
-import {fileUpload, movie} from "$lib/server/db/schema";
+import {fileUpload, movie, movieToGenre} from "$lib/server/db/schema";
 import {and, eq, isNull} from "drizzle-orm";
 import {getMovie} from "$lib/server/metadata/tmdb";
 import type {TmdbMovie} from "$lib/server/metadata/tmdb.schema";
@@ -64,6 +64,13 @@ async function createMovie(file , metadata : TmdbMovie) {
         await t1.update(fileUpload).set({
             movieId: movieTable[0].insertId
         }).where(eq(fileUpload.id, file.id))
+
+        await t1.insert(movieToGenre).values(metadata.genres.map((genre) => {
+            return {
+                movieId: movieTable[0].insertId,
+                genreId: genre.id
+            }
+        }))
     })
 
     return true

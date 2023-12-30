@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "e6e4d2ce-cd55-4f84-97da-217098fc8ced",
+  "id": "c3f47083-e44b-4010-bb6e-f24435c45d57",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "file_upload": {
@@ -55,6 +55,43 @@
         }
       },
       "uniqueConstraints": {}
+    },
+    "genre": {
+      "name": "genre",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "genre_id": {
+          "name": "genre_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "genre_id_unique": {
+          "name": "genre_id_unique",
+          "columns": [
+            "id"
+          ]
+        }
+      }
     },
     "user_key": {
       "name": "user_key",
@@ -226,6 +263,64 @@
           "name": "movie_id",
           "columns": [
             "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "movie_to_genre": {
+      "name": "movie_to_genre",
+      "columns": {
+        "movie_id": {
+          "name": "movie_id",
+          "type": "bigint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "genre_id": {
+          "name": "genre_id",
+          "type": "bigint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "movie_to_genre_movie_id_movie_id_fk": {
+          "name": "movie_to_genre_movie_id_movie_id_fk",
+          "tableFrom": "movie_to_genre",
+          "tableTo": "movie",
+          "columnsFrom": [
+            "movie_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "movie_to_genre_genre_id_genre_id_fk": {
+          "name": "movie_to_genre_genre_id_genre_id_fk",
+          "tableFrom": "movie_to_genre",
+          "tableTo": "genre",
+          "columnsFrom": [
+            "genre_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "movie_to_genre_movie_id_genre_id_pk": {
+          "name": "movie_to_genre_movie_id_genre_id_pk",
+          "columns": [
+            "movie_id",
+            "genre_id"
           ]
         }
       },

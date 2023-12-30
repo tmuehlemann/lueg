@@ -1,6 +1,6 @@
 import {TMDB_API_KEY} from '$env/static/private'
-import type {TmdbMovie} from "$lib/server/metadata/tmdb.schema";
-import {movieSchema} from "$lib/server/metadata/tmdb.schema";
+import type {TmdbGenre, TmdbMovie} from "$lib/server/metadata/tmdb.schema";
+import {genreListSchema, movieSchema} from "$lib/server/metadata/tmdb.schema";
 
 const baseUrl = "https://api.themoviedb.org/3"
 
@@ -12,6 +12,12 @@ export async function getMovie(id) : Promise<TmdbMovie> {
 
 export function queryMovie(query : string, year? : number) {
     return apiFetch(`/search/movie?query=${query}${year ? `&year=${year}` : ''}`)
+}
+
+export async function getMovieGenres() : Promise<TmdbGenre[]> {
+    const response = await apiFetch(`/genre/movie/list`)
+
+    return (genreListSchema.parse(response)).genres
 }
 
 function apiFetch(path : string, settings : RequestInit = {}) {

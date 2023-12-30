@@ -1,4 +1,15 @@
-import {text, timestamp, serial, mysqlTable, varchar, bigint, int, datetime, date} from "drizzle-orm/mysql-core";
+import {
+    text,
+    timestamp,
+    serial,
+    mysqlTable,
+    varchar,
+    bigint,
+    int,
+    datetime,
+    date,
+    primaryKey
+} from "drizzle-orm/mysql-core";
 import {relations} from "drizzle-orm";
 
 export const luciaTableNames = {
@@ -91,6 +102,35 @@ export const movie = mysqlTable("movie", {
     updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });
 
-const movieRelations = relations(movie, ({ many }) => ({
+export const movieRelations = relations(movie, ({ many }) => ({
     fileUploads: many(fileUpload),
+    movieToGenre: many(movieToGenre),
+}));
+
+export const genre = mysqlTable("genre", {
+    id: bigint("id", { mode: 'number', unsigned: true }).unique().notNull().primaryKey(),
+    name: varchar("name", {length: 255}).notNull(),
+});
+
+export const genreRelations = relations(genre, ({ many }) => ({
+    movieToGenre: many(movieToGenre),
+}));
+
+export const movieToGenre = mysqlTable('movie_to_genre', {
+    movieId: bigint('movie_id', { mode: 'number', unsigned: true }).notNull().references(() => movie.id),
+    genreId: bigint('genre_id', { mode: 'number', unsigned: true }).notNull().references(() => genre.id),
+    }, (t) => ({
+        pk: primaryKey({columns: [t.movieId, t.genreId]}),
+    }),
+);
+
+export const movieToGenreRelations = relations(movieToGenre, ({ one }) => ({
+    movie: one(movie, {
+        fields: [movieToGenre.movieId],
+        references: [movie.id]
+    }),
+    genre: one(genre, {
+        fields: [movieToGenre.genreId],
+        references: [genre.id]
+    }),
 }));
