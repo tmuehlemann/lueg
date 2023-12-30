@@ -24,6 +24,7 @@
     cursor: pointer;
     display: flex;
     gap: .5rem;
+    align-items: center;
 
     &:focus {
       box-shadow: var(--ring);

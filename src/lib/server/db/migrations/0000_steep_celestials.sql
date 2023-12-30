@@ -23,6 +23,8 @@ CREATE TABLE `user_key` (
 --> statement-breakpoint
 CREATE TABLE `movie` (
 	`id` serial AUTO_INCREMENT NOT NULL,
+	`backdrop_path` varchar(255),
+	`budget` int,
 	`tmdb_id` int NOT NULL,
 	`imdb_id` varchar(255),
 	`original_language` varchar(255) NOT NULL,

@@ -85,6 +85,8 @@ export const userRelations = relations(user, ({ many }) => ({
 export const movie = mysqlTable("movie", {
     id: serial("id").primaryKey(),
     // metadata - copied from tmdb
+    backdropPath: varchar("backdrop_path", {length: 255}),
+    budget: int("budget"),
     tmdbId: int("tmdb_id").notNull(),
     imdbId: varchar("imdb_id", {length: 255}),
     originalLanguage: varchar("original_language", {length: 255}).notNull(),

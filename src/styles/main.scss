@@ -34,6 +34,10 @@ html {
   container-type: inline-size;
 }
 
+html, body {
+  height: 100%;
+}
+
 
 .rt {
   margin-bottom: 1rem;

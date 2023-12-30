@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "c3f47083-e44b-4010-bb6e-f24435c45d57",
+  "id": "89f5cdca-f2d3-478c-818e-bdb1deb32a06",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "file_upload": {
@@ -153,6 +153,20 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": true
+        },
+        "backdrop_path": {
+          "name": "backdrop_path",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "budget": {
+          "name": "budget",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         },
         "tmdb_id": {
           "name": "tmdb_id",

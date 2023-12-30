@@ -59,6 +59,8 @@ async function createMovie(file , metadata : TmdbMovie) {
             revenue: metadata.revenue,
             runtime: metadata.runtime,
             tagline: metadata.tagline,
+            backdropPath: metadata.backdrop_path,
+            budget: metadata.budget
         })
 
         await t1.update(fileUpload).set({

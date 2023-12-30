@@ -11,6 +11,19 @@
     <p>
         this is Lueg️ 👀
     </p>
+
+    movies:
+    {#each data.movies as movie }
+        <article>
+            <a href="/film/{movie.id}">
+                <img src="https://image.tmdb.org/t/p/original/{movie.posterPath}" alt="poster for {movie.title}">
+                {movie.title}
+                <pre>
+                json: {JSON.stringify(movie, null, 2)}
+                </pre>
+            </a>
+        </article>
+    {/each}
 </div>
 
 <style lang="scss">

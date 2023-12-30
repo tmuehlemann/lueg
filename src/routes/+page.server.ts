@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db/db';
-import { user as users } from '$lib/server/db/schema';
+import {movie, user as users} from '$lib/server/db/schema';
 import type {Actions, PageServerLoad} from './$types';
 import {fail, redirect} from "@sveltejs/kit";
 import {authenticated, logout} from "$lib/server/user";
@@ -9,7 +9,8 @@ export const load = (async ({locals}) => {
 
     return {
         user,
-        users: await db.select().from(users)
+        users: await db.select().from(users),
+        movies: await db.select().from(movie)
     };
 }) satisfies PageServerLoad;
 
