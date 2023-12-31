@@ -4,6 +4,8 @@ import {and, eq, isNull} from "drizzle-orm";
 import {getMovie} from "$lib/server/metadata/tmdb";
 import type {TmdbMovie} from "$lib/server/metadata/tmdb.schema";
 import {undefined} from "zod";
+import {writeFile} from "fs/promises";
+import {makeSafeFilename} from "$lib/helper/filename";
 
 
 export async function publishMovie(
@@ -12,20 +14,15 @@ export async function publishMovie(
 ) {
 
     // get file upload
-
-    const response= await db.select().from(fileUpload).where(
-        and(
+    const movieFileUpload : fileUpload | null = db.query.fileUpload.findFirst({
+        where: (fileUpload, {and, eq}) => and(
             eq(fileUpload.id, fileUploadId),
-    ))
+            isNull(fileUpload.movieId)
+        )
+    })
 
-    if (response.length !== 1) {
-        throw new Error("File upload not found")
-    }
-
-    const movieFileUpload = response[0]
-
-    if (movieFileUpload.movieId !== null) {
-        throw new Error("File upload already published")
+    if (!fileUpload) {
+        throw new Error("File upload not found, because the id is wrong or it is already published")
     }
 
     // get movie metadata
@@ -35,6 +32,19 @@ export async function publishMovie(
     } catch (e) {
         console.error(e)
         throw new Error("Failed to get movie metadata")
+    }
+
+    // download poster and backdrop
+    try {
+        const TMDB_BASE = 'https://image.tmdb.org/t/p/original'
+        let filename = makeSafeFilename(metadata.title)
+        await downloadFile(TMDB_BASE + metadata.poster_path, 'static/metadata/posters/' + filename + '.jpg')
+        await downloadFile(TMDB_BASE + metadata.backdrop_path, 'static/metadata/backdrops/' + filename + '.jpg')
+        metadata.poster_path = filename + '.jpg'
+        metadata.backdrop_path = filename + '.jpg'
+    } catch (e) {
+        console.error(e)
+        throw new Error("Failed to download poster or backdrop")
     }
 
     // create movie entry
@@ -76,4 +86,11 @@ async function createMovie(file , metadata : TmdbMovie) {
     })
 
     return true
+}
+
+async function downloadFile(url : string, destination : string) {
+    const response = await fetch(url)
+    const buffer = await response.arrayBuffer()
+    await writeFile(destination, Buffer.from(buffer))
+
 }

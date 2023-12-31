@@ -15,7 +15,8 @@
 		"db:fresh": "drizzle-kit drop",
 		"db:check": "drizzle-kit check:mysql",
 		"db:studio": "drizzle-kit studio --verbose",
-		"db:seed": "vite-node --options.transformMode.ssr='/.*/' src/lib/server/db/seed.ts"
+		"db:seed": "vite-node --options.transformMode.ssr='/.*/' src/lib/server/db/seed.ts",
+		"metadata:clean": "vite-node --options.transformMode.ssr='/.*/' src/lib/server/metadata/clean.ts"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",

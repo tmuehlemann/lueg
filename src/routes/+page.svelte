@@ -12,7 +12,7 @@
     {#each data.movies as movie }
         <article>
             <a href="/film/{movie.id}">
-                <img src="https://image.tmdb.org/t/p/original/{movie.posterPath}" alt="poster for {movie.title}">
+                <img src="/metadata/posters/{movie.posterPath}" alt="poster for {movie.title}">
                 {movie.title}
             </a>
         </article>

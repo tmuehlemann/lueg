@@ -31,12 +31,12 @@
 <div class="page"
         style:--bg={bg}
         style:--fg={fg}
-        style:background-image={`url(https://image.tmdb.org/t/p/original/${movie.backdropPath})`}
+        style:background-image={`url(/metadata/backdrops/${movie.backdropPath})`}
 >
     <main class="wrap">
 
         <div class="poster">
-            <img src="https://image.tmdb.org/t/p/original/{movie.posterPath}" alt="{movie.title} poster">
+            <img src="/metadata/posters/{movie.posterPath}" alt="{movie.title} poster">
         </div>
 
         <div>

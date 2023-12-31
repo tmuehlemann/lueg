@@ -75,3 +75,7 @@ export function extractMovieInfo(filename : string) {
         years: Array.from(year).reverse()
     }
 }
+
+export function makeSafeFilename(str) {
+    return str.replace(/[^a-zA-Z0-9-_]/g, '_');
+}
