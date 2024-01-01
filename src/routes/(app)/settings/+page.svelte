@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PageData } from './$types'
     import {enhance} from "$app/forms";
-    import Button from "../../components/ui/form/Button.svelte";
+    import Button from "$lib/components/ui/form/Button.svelte";
     export let data : PageData
 
     let indexingMovies = false

@@ -1,4 +1,4 @@
-<div class="logo"><a href="/">Lueg</a></div>
+<div class="logo"><a href="/static">Lueg</a></div>
 
 <style lang="scss">
 .logo {

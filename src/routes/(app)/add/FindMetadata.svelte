@@ -1,10 +1,10 @@
 <script lang="ts">
     import { enhance} from "$app/forms";
-    import SearchResult from "../../components/ui/SearchResult.svelte";
-    import Button from "../../components/ui/form/Button.svelte";
-    import FormField from "../../components/ui/form/FormField.svelte";
-    import Label from "../../components/ui/form/Label.svelte";
-    import Input from "../../components/ui/form/Input.svelte";
+    import SearchResult from "$lib/components/ui/SearchResult.svelte";
+    import Button from "$lib/components/ui/form/Button.svelte";
+    import FormField from "$lib/components/ui/form/FormField.svelte";
+    import Label from "$lib/components/ui/form/Label.svelte";
+    import Input from "$lib/components/ui/form/Input.svelte";
     import {BadgeCheck, Search} from "lucide-svelte";
     import type {ActionData} from "./$types.js";
     import {createEventDispatcher} from "svelte";

@@ -1,9 +1,9 @@
 <script lang="ts">
-    import Input from "../../components/ui/form/Input.svelte";
-    import Label from "../../components/ui/form/Label.svelte";
-    import Button from "../../components/ui/form/Button.svelte";
-    import FormField from "../../components/ui/form/FormField.svelte";
-    import FormSection from "../../components/ui/form/FormSection.svelte";
+    import Input from "$lib/components/ui/form/Input.svelte";
+    import Label from "$lib/components/ui/form/Label.svelte";
+    import Button from "$lib/components/ui/form/Button.svelte";
+    import FormField from "$lib/components/ui/form/FormField.svelte";
+    import FormSection from "$lib/components/ui/form/FormSection.svelte";
 
     import type { ActionData } from './$types';
     import { enhance } from '$app/forms';

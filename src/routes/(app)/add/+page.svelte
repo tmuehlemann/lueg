@@ -1,7 +1,7 @@
 <script lang="ts">
     import type {ActionData} from "./$types"
-    import Wizard from "../../components/ui/Wizard.svelte";
-    import Step from "../../components/ui/Step.svelte";
+    import Wizard from "$lib/components/ui/Wizard.svelte";
+    import Step from "$lib/components/ui/Step.svelte";
     import FindMetadata from "./FindMetadata.svelte";
     import UploadMovie from "./UploadMovie.svelte";
     import PublishMovie from "./PublishMovie.svelte";

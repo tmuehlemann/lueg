@@ -1,7 +1,7 @@
 <script>
     import {enhance} from "$app/forms";
     import {formatBytes} from "$lib/helper/formatters.ts";
-    import Button from "../../components/ui/form/Button.svelte";
+    import Button from "$lib/components/ui/form/Button.svelte";
     import {PartyPopper} from "lucide-svelte";
 
     export let uploadedFile;

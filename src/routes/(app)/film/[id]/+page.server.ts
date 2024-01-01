@@ -28,7 +28,8 @@ export const load = (async ({params, locals}) => {
                 with: {
                     genre: true
                 }
-            }
+            },
+            fileUploads: true
         }
     })
 

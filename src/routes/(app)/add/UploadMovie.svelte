@@ -1,10 +1,10 @@
 <script lang="ts">
     import {FilePlus2, Loader2} from "lucide-svelte";
     import {enhance} from "$app/forms";
-    import Label from "../../components/ui/form/Label.svelte";
-    import FormField from "../../components/ui/form/FormField.svelte";
-    import Button from "../../components/ui/form/Button.svelte";
-    import Input from "../../components/ui/form/Input.svelte";
+    import Label from "$lib/components/ui/form/Label.svelte";
+    import FormField from "$lib/components/ui/form/FormField.svelte";
+    import Button from "$lib/components/ui/form/Button.svelte";
+    import Input from "$lib/components/ui/form/Input.svelte";
     import {createEventDispatcher, onMount} from "svelte";
 
 

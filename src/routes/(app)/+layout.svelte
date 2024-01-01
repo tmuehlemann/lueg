@@ -1,9 +1,9 @@
 <script>
     import '/src/styles/main.scss';
-    import Button from "../components/ui/form/Button.svelte";
+    import Button from "$lib/components/ui/form/Button.svelte";
     import {enhance} from "$app/forms";
     import {LibrarySquare, PlusSquare, Settings} from "lucide-svelte";
-    import Logo from "../components/Logo.svelte";
+    import Logo from "$lib/components/Logo.svelte";
 
     export let data;
 </script>

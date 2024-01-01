@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    import Button from "../../../components/ui/form/Button.svelte";
+    import Button from "$lib/components/ui/form/Button.svelte";
     import {Play} from "lucide-svelte";
     import {onMount} from "svelte";
     import tinycolor from "tinycolor2";
@@ -103,10 +103,15 @@
                 </p>
 
                 <div class="pb1">
-                    <Button --fg="var(--primary)">
-                        <Play size={18}/>
-                        Watch
-                    </Button>
+                    {#each movie.fileUploads as fileUpload }
+                        <Button href="/watch/{fileUpload.id}" --fg="var(--primary)">
+                            <Play size={18}/>
+                            Watch
+                            {#if movie.fileUploads.length > 1}
+                                {fileUpload.path}
+                            {/if}
+                        </Button>
+                    {/each}
                 </div>
             </div>
 
