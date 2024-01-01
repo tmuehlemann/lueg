@@ -37,6 +37,9 @@ CREATE TABLE `movie` (
 	`tagline` text,
 	`title` text NOT NULL,
 	`revenue` int,
+	`fg_color` char(7),
+	`bg_color` char(7),
+	`primary_color` char(7),
 	`created_at` timestamp NOT NULL DEFAULT (now()),
 	`updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
 	CONSTRAINT `movie_id` PRIMARY KEY(`id`)

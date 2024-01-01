@@ -9,3 +9,10 @@ export function formatBytes(bytes:number, decimals:number = 2):string {
 
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
 }
+
+export function formatTime(minutes : number) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+
+    return `${hours}h ${mins}m`
+}

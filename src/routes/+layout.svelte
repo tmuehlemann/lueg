@@ -57,6 +57,7 @@
     width: 100%;
     backdrop-filter: blur(.5rem);
     background: rgba(var(--bg-rgb), 0.5);
+    z-index: 100;
     >.wrap {
     border-bottom: 1px solid rgba(var(--fg-rgb), 0.1);
         display: flex;

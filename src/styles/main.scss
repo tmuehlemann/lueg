@@ -10,6 +10,7 @@ html {
   font-family: Geist, Inter, Manrope, Helvetica, sans-serif;
   background: var(--bg);
   color: var(--fg);
+  transition: background 500ms ease, color 500ms ease;
 }
 
 .wrap {

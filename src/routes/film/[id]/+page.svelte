@@ -1,8 +1,10 @@
-<script type="ts">
+<script lang="ts">
 
     import Button from "../../../components/ui/form/Button.svelte";
     import {Play} from "lucide-svelte";
     import {onMount} from "svelte";
+    import tinycolor from "tinycolor2";
+    import {formatTime} from "$lib/helper/formatters";
 
     export let data
 
@@ -11,28 +13,53 @@
 
     $: {
         console.log(movie)
+        applyMovieColors(movie)
     }
 
-    // todo: extract from backdrop image
-    const fg = '#fff'
-    const bg = '#000'
-
-    onMount(() => {
+    function applyMovieColors(movie) {
+        if (typeof document === "undefined") return;
         const root = document.documentElement;
 
+        const fg = tinycolor(movie.fgColor)
+        const bg = tinycolor(movie.bgColor)
+        const primary = tinycolor(movie.primaryColor)
+
         root.style.setProperty('--spacer-height', '0');
+        root.style.setProperty('--fg', fg.toString() );
+        root.style.setProperty('--fg-rgb', toRgb(fg) );
+        root.style.setProperty('--bg', bg.toString() );
+        root.style.setProperty('--bg-rgb', toRgb(bg) );
+        root.style.setProperty('--primary', primary.toString() );
+    }
+
+    onMount(() => {
+
+        // cleanup
         return () => {
+            if (!document?.documentElement) return;
+            const root = document.documentElement;
+
             root.style.removeProperty('--spacer-height')
+            root.style.removeProperty('--fg')
+            root.style.removeProperty('--fg-rgb')
+            root.style.removeProperty('--bg')
+            root.style.removeProperty('--bg-rgb')
+            root.style.removeProperty('--primary')
         }
     })
 
+    export function toRgb(color : tinycolor.Instance) {
+        return Object
+            .values(color.toRgb()) // convert to array
+            .slice(0,3) // remove alpha
+            .join(', ') // convert to string
+    }
 </script>
 
-<div class="page"
-        style:--bg={bg}
-        style:--fg={fg}
-        style:background-image={`url(/metadata/backdrops/${movie.backdropPath})`}
->
+<div class="page">
+    <div class="backdrop">
+        <img src="/metadata/backdrops/{movie.backdropPath}" alt="backdrop">
+    </div>
     <main class="wrap">
 
         <div class="poster">
@@ -44,10 +71,17 @@
                 {movie.title}
             </h1>
                 <h2 class="pb1">
+                    <span>
                     ({movie.releaseDate.getFullYear()})
+                    </span>
                     {#if movie.title !== movie.originalTitle}
+                        <span>
                         {movie.originalTitle}
+                        </span>
                     {/if}
+                    <span>
+                    {formatTime(movie.runtime)}
+                    </span>
                     <!-- directed by ?-->
                 </h2>
 
@@ -69,7 +103,7 @@
                 </p>
 
                 <div class="pb1">
-                    <Button>
+                    <Button --fg="var(--primary)">
                         <Play size={18}/>
                         Watch
                     </Button>
@@ -111,16 +145,52 @@
   .page {
     color: var(--fg);
     min-height: 100%;
-    background-repeat: no-repeat;
-    background-size: cover;
     padding-bottom: 8vmin;
+    background: var(--bg);
+    z-index: 0;
+  }
+  .backdrop {
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 1;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &:after, &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+    }
+
+    &:before {
+      backdrop-filter: blur(1rem);
+      -webkit-mask: linear-gradient(180deg, transparent, black 50vmin);
+    }
+
+    &:after {
+      background: linear-gradient(180deg, transparent, rgba(var(--bg-rgb),.8) 50vh, var(--bg) 100vh);
+    }
+  }
+
+  .wrap {
+    z-index: 2;
+    position: relative;
   }
 
   main {
     display: flex;
     justify-content: center;
     gap: 3rem;
-    padding-top: 8vmin;
+    padding-top: calc(5rem + 20vmin);
   }
   .poster {
     max-width: 300px;
@@ -158,5 +228,14 @@
       font-weight: 400;
       margin-top: 2rem;
       margin-bottom: .5rem;
+    }
+    h2 {
+      font-weight: 400;
+      font-size: 1.2rem;
+      color: var(--primary);
+      span:not(:last-child)::after {
+        content: '·';
+        padding-inline: .5rem;
+      }
     }
 </style>

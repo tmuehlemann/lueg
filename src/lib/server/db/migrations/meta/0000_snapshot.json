@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "89f5cdca-f2d3-478c-818e-bdb1deb32a06",
+  "id": "cf3cbd48-af44-46fe-b93b-ac5b79ca062f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "file_upload": {
@@ -248,6 +248,27 @@
         "revenue": {
           "name": "revenue",
           "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "fg_color": {
+          "name": "fg_color",
+          "type": "char(7)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "bg_color": {
+          "name": "bg_color",
+          "type": "char(7)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "primary_color": {
+          "name": "primary_color",
+          "type": "char(7)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false

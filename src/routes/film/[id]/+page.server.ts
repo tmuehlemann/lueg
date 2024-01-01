@@ -2,7 +2,6 @@ import {authenticated} from "$lib/server/user";
 import type {PageServerLoad} from './$types';
 import {error} from "@sveltejs/kit";
 import {db} from "$lib/server/db/db";
-import {movie} from "$lib/server/db/schema";
 import {z} from "zod";
 
 export const load = (async ({params, locals}) => {

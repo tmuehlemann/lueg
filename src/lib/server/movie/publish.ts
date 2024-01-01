@@ -6,7 +6,8 @@ import type {TmdbMovie} from "$lib/server/metadata/tmdb.schema";
 import {undefined} from "zod";
 import {writeFile} from "fs/promises";
 import {makeSafeFilename} from "$lib/helper/filename";
-
+import {generateMetaColors, type MetaColors} from "$lib/server/metadata/metaColors";
+import tinycolor from "tinycolor2";
 
 export async function publishMovie(
     fileUploadId: number,
@@ -14,7 +15,7 @@ export async function publishMovie(
 ) {
 
     // get file upload
-    const movieFileUpload : fileUpload | null = db.query.fileUpload.findFirst({
+    const movieFileUpload = await db.query.fileUpload.findFirst({
         where: (fileUpload, {and, eq}) => and(
             eq(fileUpload.id, fileUploadId),
             isNull(fileUpload.movieId)
@@ -47,12 +48,25 @@ export async function publishMovie(
         throw new Error("Failed to download poster or backdrop")
     }
 
+
     // create movie entry
     return await createMovie(movieFileUpload, metadata)
 }
 
-async function createMovie(file , metadata : TmdbMovie) {
+async function createMovie(file : typeof fileUpload , metadata : TmdbMovie) {
     console.log('creating movie entry')
+
+    // todo: this should work if there are no posters or backdrops
+    // generate meta theme colors
+    let movieColors : MetaColors
+    try {
+        if (metadata.poster_path === null || metadata.backdrop_path === null)
+            throw new Error("Poster or backdrop path is undefined")
+        movieColors = await generateMetaColors(metadata.poster_path, metadata.backdrop_path)
+    } catch (e) {
+        console.error(e)
+        throw new Error("Failed to generate meta theme colors")
+    }
 
     await db.transaction(async (t1) => {
 
@@ -70,7 +84,10 @@ async function createMovie(file , metadata : TmdbMovie) {
             runtime: metadata.runtime,
             tagline: metadata.tagline,
             backdropPath: metadata.backdrop_path,
-            budget: metadata.budget
+            budget: metadata.budget,
+            fgColor: movieColors.fg.toHexString(),
+            bgColor: movieColors.bg.toHexString(),
+            primaryColor: movieColors.primary.toHexString(),
         })
 
         await t1.update(fileUpload).set({

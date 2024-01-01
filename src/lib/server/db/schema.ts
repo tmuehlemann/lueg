@@ -8,7 +8,7 @@ import {
     int,
     datetime,
     date,
-    primaryKey
+    primaryKey, char
 } from "drizzle-orm/mysql-core";
 import {relations} from "drizzle-orm";
 
@@ -84,6 +84,7 @@ export const userRelations = relations(user, ({ many }) => ({
 
 export const movie = mysqlTable("movie", {
     id: serial("id").primaryKey(),
+
     // metadata - copied from tmdb
     backdropPath: varchar("backdrop_path", {length: 255}),
     budget: int("budget"),
@@ -99,6 +100,11 @@ export const movie = mysqlTable("movie", {
     tagline: text("tagline"),
     title: text("title").notNull(),
     revenue: int("revenue"),
+
+    // custom metadata
+    fgColor: char("fg_color", {length: 7}),
+    bgColor: char("bg_color", {length: 7}),
+    primaryColor: char("primary_color", {length: 7}),
 
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
