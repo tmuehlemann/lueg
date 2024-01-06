@@ -47,35 +47,43 @@ export function extractMovieName(filename : string) {
         res.add(movieName.trim())
     }
 
+    // remove empty strings
+    res.delete('');
+
     return Array.from(res);
 }
 
 export function extractMovieInfo(filename : string) {
     const names = extractMovieName(filename);
-
-    const year = new Set<number>();
-
-    names.forEach(n => {
-        const yearMatch = n.match(/(?:19|20)\d{2}/g);
-        if (yearMatch) {
-            yearMatch.forEach(y => year.add(parseInt(y)));
-        }
-    })
-
-    // remove all years in the future
-    const currentYear = new Date().getFullYear();
-    Array.from(year).forEach(y => {
-        if (y > currentYear) {
-            year.delete(y);
-        }
-    })
+    const years = extractYear(filename);
 
     return {
         names,
-        years: Array.from(year).reverse()
+        years,
     }
 }
 
-export function makeSafeFilename(str) {
+// todo: Just return the year as a number
+//  - needs refactoring where the function is used
+export function extractYear(filename : string) {
+    const years = new Set<number>();
+
+    const yearMatch = filename.match(/(?:19|20)\d{2}/g);
+    if (yearMatch) {
+        yearMatch.forEach(y => years.add(parseInt(y)));
+    }
+
+    // remove all years in the future
+    const currentYear = new Date().getFullYear();
+    Array.from(years).forEach(y => {
+        if (y > currentYear) {
+            years.delete(y);
+        }
+    })
+
+    return Array.from(years).reverse()
+}
+
+export function makeSafeFilename(str : string) : string {
     return str.replace(/[^a-zA-Z0-9-_]/g, '_');
 }

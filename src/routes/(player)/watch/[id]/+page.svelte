@@ -129,13 +129,14 @@ video {
   bottom: 0;
   z-index: 100;
   left: 0;
+  right: 0;
   padding: 2rem;
   width: 100%;
   .progress-bar {
     width: 100%;
     height: .5rem;
-    backdrop-filter: blur(1rem);
-    background: rgba(var(--fg-rgb), 0.2);
+    backdrop-filter: blur(.5rem);
+    background: rgba(var(--fg-rgb), 0.3);
     border-radius: 1rem;
     position: relative;
     &:after {

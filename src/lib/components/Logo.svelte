@@ -1,4 +1,4 @@
-<div class="logo"><a href="/static">Lueg</a></div>
+<div class="logo"><a href="/">Lueg</a></div>
 
 <style lang="scss">
 .logo {
@@ -7,4 +7,4 @@
   letter-spacing: -0.04rem;
   text-decoration: underline;
 }
-</style>
+</style>`
