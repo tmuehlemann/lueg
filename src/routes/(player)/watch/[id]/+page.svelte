@@ -1,5 +1,5 @@
 <script lang="ts">
-    import '/src/styles/main.scss';
+    import "/src/app.css";
 
     import {onMount} from "svelte";
     import {formatTime} from "$lib/helper/formatters";
