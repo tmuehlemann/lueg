@@ -10,10 +10,10 @@ It's a simple web app I built using SvelteKit for managing and enjoying your med
 Once you've installed all dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
-npm run dev
+pnpm dev
 
 # or start the server and open the app in a new browser tab
-npm run dev -- --open
+pnpm dev -- --open
 ```
 
 ## Setting up the database
@@ -35,11 +35,11 @@ DB_DATABASE='lueg'
 ```
 3. Run the Migration script to create the tables in your database:
 ```bash
-npm run db:migrate
+pnpm db:migrate
 ```
 4. [Seed](https://en.wikipedia.org/wiki/Database_seeding) the database with some sample data:
 ```bash
-npm run db:seed
+pnpm db:seed
 ```
 
 ## Building
@@ -47,9 +47,9 @@ npm run db:seed
 To create a production version of your app:
 
 ```bash
-npm run build
+pnpm build
 ```
 
-You can preview the production build with `npm run preview`.
+You can preview the production build with `pnpm preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
