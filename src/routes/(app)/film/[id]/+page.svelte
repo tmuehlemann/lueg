@@ -25,6 +25,7 @@
 
     root.style.setProperty("--foreground", toRgb(fg));
     root.style.setProperty("--background", toRgb(bg));
+    root.style.setProperty("--border", toRgb(fg));
     root.style.setProperty("--primary", primary.toString());
   }
 
@@ -36,6 +37,7 @@
 
       root.style.removeProperty("--foreground");
       root.style.removeProperty("--background");
+      root.style.removeProperty("--border");
       root.style.removeProperty("--primary");
     };
   });

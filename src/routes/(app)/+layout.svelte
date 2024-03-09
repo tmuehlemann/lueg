@@ -9,7 +9,9 @@
 </script>
 
 <nav class="bg-background/50 sticky inset-x-0 top-0 z-10 backdrop-blur">
-  <div class="container m-auto flex items-center justify-between border-b p-4">
+  <div
+    class="border-border container m-auto flex items-center justify-between border-b p-4"
+  >
     <div class="flex items-center gap-4">
       <Logo></Logo>
       <ul class="flex items-center">
@@ -33,7 +35,7 @@
         {/if}
       </ul>
     </div>
-    <ul class="flex">
+    <ul class="flex gap-4">
       {#if data.user}
         <li class="flex items-center gap-4">
           <a
