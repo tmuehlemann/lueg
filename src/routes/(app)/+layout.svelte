@@ -38,17 +38,9 @@
     <ul class="flex gap-4">
       {#if data.user}
         <li class="flex items-center gap-4">
-          <a
-            class="hover:bg-foreground/5 hover:text-primary my-2 flex gap-2 rounded p-2"
-            href="/settings"
-          >
+          <Button variant="ghost" href="/settings">
             <Settings strokeWidth={1.25} /> Settings
-          </a>
-        </li>
-        <li class="flex items-center">
-          <form method="post" action="/?/logout" use:enhance>
-            <Button type="submit" variant="outline">Sign out</Button>
-          </form>
+          </Button>
         </li>
       {:else}
         <li>
