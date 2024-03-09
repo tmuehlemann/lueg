@@ -1,9 +1,3 @@
-<div>
-    <slot></slot>
+<div class="pb-4">
+  <slot />
 </div>
-
-<style lang="scss">
-div {
-  padding-bottom: 1rem;
-}
-</style>

@@ -4,10 +4,31 @@
 
 
 @layer base {
+
+    @font-face {
+        font-family: 'Geist';
+        font-style: normal;
+        font-weight: 100 900;
+        src: url('/fonts/Geist/GeistVariableVF.ttf') format('truetype-variations');
+        src: url('/fonts/Geist/GeistVariableVF.woff2') format('woff2-variations');
+    }
+
     :root {
         --background: 255 255 255;
         --foreground: 0 0 0;
-        ---primary: 255 0 0;
-        ---secondary: 255 255 0;
+        --primary: 255 68 0;
+        --secondary: 255 255 0;
+        --border: 231 229 228;
+        --ring: 0 0 0;
+    }
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --background: 0 0 0;
+            --foreground: 255 255 255;
+            --primary: 255 0 0;
+            --secondary: 255 255 0;
+            --border: 50 50 50;
+            --ring: 255 255 255;
+        }
     }
 }

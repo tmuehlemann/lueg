@@ -1,29 +1,21 @@
 <script lang="ts">
-    import type {HTMLInputAttributes} from "svelte/elements";
+  import type { HTMLInputAttributes } from "svelte/elements";
+  import { cn } from "$lib/helper/styles";
 
-    type $$Props = HTMLInputAttributes;
-    // type $$Events = InputEvents;
+  type $$Props = HTMLInputAttributes;
+  // type $$Events = InputEvents;
 
-    export let value : $$Props['value'] = undefined
-    export let className: $$Props["class"] = undefined;
+  export let value: $$Props["value"] = undefined;
 
+  let extraClasses = "";
+  export { extraClasses as class };
 </script>
 
-<input bind:value class={`rounded ${className}`} {...$$restProps} />
-
-<style lang="scss">
-    input {
-      padding: .5rem 1rem;
-      border: var(--border);
-      background: transparent;
-
-      &:focus {
-        box-shadow: var(--ring);
-      }
-      &::-webkit-file-upload-button {
-        background: transparent;
-        color: var(--fg);
-        border: none;
-      }
-    }
-</style>
+<input
+  bind:value
+  class={cn(
+    "border-border text-foreground rounded border bg-transparent px-4 py-2 focus:ring ",
+    extraClasses,
+  )}
+  {...$$restProps}
+/>
