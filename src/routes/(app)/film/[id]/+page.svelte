@@ -74,7 +74,7 @@
     </div>
 
     <div>
-      <h1 class="pb-4">
+      <h1 class="pb-4 text-4xl">
         {movie.title}
       </h1>
       <h2 class="text-primary pb-4 text-xl">

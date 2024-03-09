@@ -20,7 +20,7 @@
   let elm = "href" in $$props ? "a" : "button";
 
   const buttonClasses = cva(
-    "rounded inline-flex cursor-pointer items-center gap-2 py-2 px-4 disabled:cursor-not-allowed disabled:opacity-50 justify-center active:scale-[.98] transition-transform data-[active]:bg-foreground/10",
+    "rounded-lg inline-flex cursor-pointer items-center gap-2 py-2 px-4 disabled:cursor-not-allowed disabled:opacity-50 justify-center active:scale-[.98] transition-transform data-[active]:bg-foreground/10",
     {
       variants: {
         variant: {
