@@ -21,14 +21,12 @@
         --border: 231 229 228;
         --ring: 0 0 0;
     }
-    @media (prefers-color-scheme: dark) {
-        :root {
-            --background: 0 0 0;
-            --foreground: 255 255 255;
-            --primary: 255 0 0;
-            --secondary: 255 255 0;
-            --border: 50 50 50;
-            --ring: 255 255 255;
-        }
+    .dark {
+        --background: 0 0 0;
+        --foreground: 255 255 255;
+        --primary: 255 68 0;
+        --secondary: 255 255 0;
+        --border: 50 50 50;
+        --ring: 255 255 255;
     }
 }

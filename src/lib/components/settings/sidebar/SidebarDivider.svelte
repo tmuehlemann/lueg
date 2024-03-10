@@ -1,1 +1,1 @@
-<hr />
+<hr class="border-border" />

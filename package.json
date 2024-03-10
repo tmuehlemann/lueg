@@ -20,6 +20,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.1.1",
+		"@sveltejs/adapter-node": "^5.0.1",
 		"@sveltejs/kit": "^2.5.3",
 		"@sveltejs/vite-plugin-svelte": "^3.0.2",
 		"@types/tinycolor2": "^1.4.6",
@@ -55,8 +56,10 @@
 		"lucia": "^2.7.7",
 		"lucide-svelte": "^0.352.0",
 		"mysql2": "^3.9.2",
+		"sharp": "^0.33.2",
 		"tailwind-merge": "^2.2.1",
 		"tinycolor2": "^1.6.0",
+		"ws": "^8.16.0",
 		"zod": "^3.22.4"
 	}
 }

@@ -12,8 +12,8 @@ export default {
       colors: {
         background: "rgb(var(--background) / <alpha-value>)",
         foreground: "rgb(var(--foreground) / <alpha-value>)",
-        primary: "rgb(var(--foreground) / <alpha-value>)",
-        secondary: "rgb(var(--foreground) / <alpha-value>)",
+        primary: "rgb(var(--primary) / <alpha-value>)",
+        secondary: "rgb(var(--secondary) / <alpha-value>)",
         border: "rgb(var(--border) / <alpha-value>)",
         ring: "rgb(var(--ring) / <alpha-value>)",
       },
@@ -24,8 +24,13 @@ export default {
   },
   plugins: [
     require("@tailwindcss/container-queries"),
-    plugin(function ({ addVariant }) {
+    plugin(function ({ addVariant, matchUtilities }) {
       addVariant("not-last", "&:not(:last-child)");
+      matchUtilities({
+        vt: (value) => ({
+          "view-transition-name": value,
+        }),
+      });
     }),
   ],
 };

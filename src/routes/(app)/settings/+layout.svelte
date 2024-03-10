@@ -16,12 +16,12 @@
 
 <div class="flex h-full">
   <aside class="bg-foreground/5 relative flex-1 [flex-basis:300px]">
-    <div class="sticky top-0 ml-auto flex w-[300px] flex-col gap-y-1 px-4">
+    <div class="sticky top-7 ml-auto flex w-[300px] flex-col gap-y-1 px-4">
       <Title>User Settings</Title>
-      <Button href="/settings/profile"
-        ><CircleUserRound strokeWidth="1.2" /> Profile</Button
-      >
-      <Divider></Divider>
+      <Button href="/settings/profile">
+        <CircleUserRound strokeWidth="1.2" /> Profile
+      </Button>
+      <Divider />
       <Title>App Settings</Title>
       <Button href="/settings/appearance">
         <SwatchBook strokeWidth="1.2" /> Appearance
@@ -43,6 +43,15 @@
     </div>
   </aside>
   <main class="flex-1 px-5 pt-8 [flex-basis:900px]">
-    <slot />
+    <div class="mr-auto max-w-[900px]">
+      <slot />
+    </div>
   </main>
 </div>
+
+<style>
+  :global(::view-transition-old(root)),
+  :global(::view-transition-new(root)) {
+    animation: none;
+  }
+</style>

@@ -7,21 +7,39 @@
     LibrarySquare,
     Plus,
     PlusSquare,
+    Search,
     Settings,
   } from "lucide-svelte";
   import Logo from "$lib/components/Logo.svelte";
+  import { onNavigate } from "$app/navigation";
 
   export let data;
+
+  onNavigate((navigation) => {
+    if (!document.startViewTransition) return;
+
+    return new Promise((resolve) => {
+      document.startViewTransition(async () => {
+        resolve();
+        await navigation.complete;
+      });
+    });
+  });
 </script>
 
 <nav
-  class="bg-background/95 border-border fixed inset-x-0 bottom-2 z-40 m-auto flex w-fit items-center justify-between rounded-xl border p-1 shadow-2xl shadow-black backdrop-blur"
+  class="bg-background/80 vt-[header] border-border fixed inset-x-0 bottom-2 z-50 m-auto flex w-fit items-center justify-between rounded-xl border p-1 shadow-2xl shadow-black backdrop-blur"
 >
   <ul class="flex items-center gap-2">
     {#if data?.user}
       <li>
         <Button variant="ghost" href="/">
           <Library strokeWidth={1.25} />
+        </Button>
+      </li>
+      <li>
+        <Button variant="ghost" href="/search">
+          <Search strokeWidth={1.25} />
         </Button>
       </li>
       <li>
@@ -43,3 +61,11 @@
 </nav>
 
 <slot />
+
+<style>
+  :global(::view-transition-group(header)) {
+    animation-duration: 500ms;
+    animation-timing-function: ease;
+    z-index: 50;
+  }
+</style>

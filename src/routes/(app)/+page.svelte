@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { PageData } from "./$types";
+  import Poster from "$lib/components/ui/Poster.svelte";
   export let data: PageData;
 </script>
 
@@ -9,12 +10,10 @@
       <article>
         <a href="/film/{movie.id}">
           <div
-            class="aspect-poster bg-background relative w-full overflow-hidden rounded shadow-lg"
+            style:view-transition-name="poster-{movie.id}"
+            class="aspect-poster bg-background w-full overflow-hidden rounded shadow-lg"
           >
-            <img
-              src="/metadata/posters/{movie.posterPath}"
-              alt="poster for {movie.title}"
-            />
+            <Poster src={movie.posterPath} alt={movie.title} />
           </div>
         </a>
       </article>
