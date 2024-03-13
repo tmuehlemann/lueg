@@ -1,55 +1,15 @@
 # Lueg
-Lueg (/luɛg/) is a Swiss German term synonymous with "look" or "watch."
 
-It's a simple web app I built using SvelteKit for managing and enjoying your media collection.
+This is a personal project aimed at creating a web application to manage my media collection. The project primarily serves as a learning experience for utilizing SvelteKit and NestJS frameworks.
 
-## Developing
+## Project status
+I'm currently transitioning the backend to NestJS because I've encountered limitations in implementing certain features, such as Websockets and background tasks, using SvelteKit.
 
-**_Make sure you have [set up the MySQL database](#setting-up-the-database) (see below)._**
+Things i want to change, during the transitioning:
+- [ ] creating my own authentication system
+  - [ ] passkeys support (maybe)
+- [ ] Switching from mysql to postgres
 
-Once you've installed all dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-pnpm dev
-
-# or start the server and open the app in a new browser tab
-pnpm dev -- --open
-```
-
-## Setting up the database
-
-Lueg uses a MySQL database to store your media collection.
-
-1. Create a new database for Lueg.
-```bash
-mysqladmin -u root create lueg
-```
-2. Create a `.env` file in the root of the project and add the following:
-```dotenv
-# example .env file with default values for local development
-DB_HOST='localhost'
-DB_PORT=3306
-DB_USERNAME='root'
-DB_PASSWORD=''
-DB_DATABASE='lueg'
-```
-3. Run the Migration script to create the tables in your database:
-```bash
-pnpm db:migrate
-```
-4. [Seed](https://en.wikipedia.org/wiki/Database_seeding) the database with some sample data:
-```bash
-pnpm db:seed
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-pnpm build
-```
-
-You can preview the production build with `pnpm preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## Technologies Used
+- **SvelteKit:** Frontend framework for building reactive web applications. 
+- **NestJS:** Backend framework for building efficient and scalable server-side applications.
