@@ -1,15 +1,6 @@
 <script>
-  import "/src/app.css";
   import Button from "$lib/components/ui/form/Button.svelte";
-  import { enhance } from "$app/forms";
-  import {
-    Library,
-    LibrarySquare,
-    Plus,
-    PlusSquare,
-    Search,
-    Settings,
-  } from "lucide-svelte";
+  import { Library, Plus, Search, Settings } from "lucide-svelte";
   import { onNavigate } from "$app/navigation";
   import { auth } from "$lib/service/auth";
 
