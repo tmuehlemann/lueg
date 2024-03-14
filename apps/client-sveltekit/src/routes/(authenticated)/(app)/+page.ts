@@ -7,7 +7,7 @@ export const load = (async () => {
 
   try {
     user = await apiFetch("/auth/profile", { authenticated: true });
-    // movies = await apiFetch("/movies");
+    movies = await apiFetch("/movies", { authenticated: true });
   } catch {
     console.log("failed to fetch");
     redirect(302, "/login");
@@ -15,7 +15,6 @@ export const load = (async () => {
 
   return {
     user,
-    movies: [],
-    // movies,
+    movies,
   };
 }) satisfies PageLoad;

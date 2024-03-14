@@ -3,15 +3,18 @@
   import Heading from "$lib/components/settings/Heading.svelte";
 
   export let data: PageData;
+
+  // todo: get users from backend
+  const users: { username: string }[] = [];
 </script>
 
 <Heading>Admin Settings</Heading>
-{#if data?.users}
-  <section class="border-border mb-8 rounded border p-4">
+{#if users}
+  <section class="mb-8 rounded border border-border p-4">
     <h2>Users</h2>
     <ul>
-      {#each data.users as user}
-        <li class="border-border not-last:border-b py-2">
+      {#each users as user}
+        <li class="border-border py-2 not-last:border-b">
           {user.username}
         </li>
       {/each}

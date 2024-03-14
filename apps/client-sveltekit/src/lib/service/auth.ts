@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 import { apiFetch } from "$lib/service/service";
 import { z } from "zod";
+import { goto } from "$app/navigation";
 
 const respSchema = z.object({
   access_token: z.string(),
@@ -28,6 +29,11 @@ export async function login(username: string, password: string) {
     console.error(e);
   }
   return false;
+}
+
+export async function logout() {
+  auth.set(initialState);
+  await goto("/login");
 }
 
 type AuthStore = { access_token: string | null; isAuthenticated: boolean };

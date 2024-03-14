@@ -11,11 +11,12 @@
     Shield,
     SwatchBook,
   } from "lucide-svelte";
+  import { logout } from "$lib/service/auth";
   export let data: PageData;
 </script>
 
 <div class="flex h-full">
-  <aside class="bg-foreground/5 relative flex-1 [flex-basis:300px]">
+  <aside class="relative flex-1 bg-foreground/5 [flex-basis:300px]">
     <div class="sticky top-7 ml-auto flex w-[300px] flex-col gap-y-1 px-4">
       <Title>User Settings</Title>
       <Button href="/settings/profile">
@@ -29,17 +30,9 @@
       <Button href="/settings/media"><Book strokeWidth="1.2" /> Media</Button>
       <Button href="/settings/admin"><Shield strokeWidth="1.2" /> Admin</Button>
       <Divider />
-      <form
-        class="contents text-red-500"
-        method="post"
-        action="/?/logout"
-        style:--foreground="255 25 0"
-        use:enhance
-      >
-        <Button type="submit">
-          <LogOut strokeWidth="1.2" /> Sign out
-        </Button>
-      </form>
+      <Button --foreground="255 25 0" class="text-red-500" on:click={logout}>
+        <LogOut strokeWidth="1.2" /> Sign out
+      </Button>
     </div>
   </aside>
   <main class="flex-1 px-5 pt-8 [flex-basis:900px]">
