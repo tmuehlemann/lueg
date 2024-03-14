@@ -12,7 +12,12 @@ import { AuthService } from './auth.service';
 import { Public } from './constants';
 import { z } from 'zod';
 import { ZodValidationPipe } from '../zod-validation/zod-validation.pipe';
-import { SignInDto, signInSchema } from './auth.controller.schemas';
+import {
+  RegisterDto,
+  registerSchema,
+  SignInDto,
+  signInSchema,
+} from './auth.controller.schemas';
 
 @Controller('auth')
 export class AuthController {
@@ -22,8 +27,15 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @UsePipes(new ZodValidationPipe(signInSchema))
-  signIn(@Body() signInDto: SignInDto) {
+  signIn(@Body() signInDto: SignInDto): Promise<{ access_token: string }> {
     return this.authService.signIn(signInDto.username, signInDto.password);
+  }
+
+  @Public() // for now
+  @Post('register')
+  @UsePipes(new ZodValidationPipe(registerSchema))
+  register(@Body() registerDto: RegisterDto) {
+    return this.authService.register(registerDto);
   }
 
   @Get('profile')

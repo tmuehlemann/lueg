@@ -16,6 +16,10 @@ export class AuthService {
   ): Promise<{ access_token: string }> {
     const user = await this.usersService.findOne(username);
 
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new UnauthorizedException();
@@ -28,8 +32,10 @@ export class AuthService {
     };
   }
 
-  async hashPassword(password: string): Promise<string> {
-    const saltRounds = 10;
-    return await bcrypt.hash(password, saltRounds);
+  async register(userDto: {
+    username: string;
+    password: string;
+  }): Promise<Record<string, any>> {
+    return this.usersService.create(userDto);
   }
 }

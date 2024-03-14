@@ -1,29 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { DrizzleAsyncProvider } from '../drizzle/drizzle.provider';
+import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
+import * as schema from '../drizzle/schema';
+import { eq } from 'drizzle-orm';
 
-// This should be a real class/interface representing a user entity
-export type User = {
-  userId: number;
+export type UserDto = {
   username: string;
   password: string;
 };
 
 @Injectable()
 export class UsersService {
-  private readonly users: User[] = [
-    {
-      userId: 1,
-      username: 'john',
-      password: '$2b$10$EDhcwZm9jx2.8GBAS8pX2ufO2PfH7Nyh1kI.kzIo.qFdkGBqgIBQa', // password is: changeme
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: '$2b$10$TxM.j83SVJhdMrC.K9PEke1ZKdRMjydC0U1hTzWB30JukMdB.fFcu', // password is: guess
-    },
-  ];
+  constructor(
+    @Inject(DrizzleAsyncProvider) private db: PostgresJsDatabase<typeof schema>,
+  ) {}
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+  async create(userDto: UserDto) {
+    const user = await this.findOne(userDto.username);
+
+    if (user) {
+      throw new ConflictException('username not unique');
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(userDto.password, saltRounds);
+
+    const newUsers = await this.db
+      .insert(schema.users)
+      .values({
+        ...userDto,
+        password: hashedPassword,
+      })
+      .returning();
+
+    const { password, ...result } = newUsers[0];
+
+    return result;
+  }
+
+  async findOne(username: string): Promise<Record<string, any> | undefined> {
+    const user = await this.db.query.users.findFirst({
+      where: eq(schema.users.username, username),
+    });
+
+    return user;
   }
 }
