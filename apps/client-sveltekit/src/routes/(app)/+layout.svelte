@@ -10,10 +10,8 @@
     Search,
     Settings,
   } from "lucide-svelte";
-  import Logo from "$lib/components/Logo.svelte";
   import { onNavigate } from "$app/navigation";
-
-  export let data;
+  import { auth } from "$lib/service/auth";
 
   onNavigate((navigation) => {
     if (!document.startViewTransition) return;
@@ -28,10 +26,10 @@
 </script>
 
 <nav
-  class="bg-background/80 vt-[header] border-border fixed inset-x-0 bottom-2 z-50 m-auto flex w-fit items-center justify-between rounded-xl border p-1 shadow-2xl shadow-black backdrop-blur"
+  class="fixed inset-x-0 bottom-2 z-50 m-auto flex w-fit items-center justify-between rounded-xl border border-border bg-background/80 p-1 shadow-2xl shadow-black backdrop-blur vt-[header]"
 >
   <ul class="flex items-center gap-2">
-    {#if data?.user}
+    {#if $auth.isAuthenticated}
       <li>
         <Button variant="ghost" href="/">
           <Library strokeWidth={1.25} />

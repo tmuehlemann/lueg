@@ -5,18 +5,22 @@
   import FormField from "$lib/components/ui/form/FormField.svelte";
   import FormSection from "$lib/components/ui/form/FormSection.svelte";
 
-  import type { ActionData } from "./$types";
-  import { enhance } from "$app/forms";
-  export let form: ActionData;
-
-  $: console.log(form);
+  import { login } from "$lib/service/auth";
+  import { goto } from "$app/navigation";
 
   let name = "";
   let password = "";
 </script>
 
 <div class="m-auto mt-24 max-w-[400px]">
-  <form action="?/login" method="post" use:enhance>
+  <form
+    on:submit|preventDefault={async () => {
+      const success = await login(name, password);
+      if (success) {
+        goto("/");
+      }
+    }}
+  >
     <FormSection legend="Login">
       <FormField>
         <Label for="username">Username</Label>
@@ -42,18 +46,18 @@
 
       <Button class="w-full">Login</Button>
 
-      {#if form?.error}
-        <ul class="my-2 rounded bg-red-100 p-2 text-red-800">
-          {#each form.errors as error}
-            <li class="not-last:pb-4">
-              {#if error.field}
-                <b>{error.field}:</b>
-              {/if}
-              {error.message}
-            </li>
-          {/each}
-        </ul>
-      {/if}
+      <!--{#if form?.error}-->
+      <!--  <ul class="my-2 rounded bg-red-100 p-2 text-red-800">-->
+      <!--    {#each form.errors as error}-->
+      <!--      <li class="not-last:pb-4">-->
+      <!--        {#if error.field}-->
+      <!--          <b>{error.field}:</b>-->
+      <!--        {/if}-->
+      <!--        {error.message}-->
+      <!--      </li>-->
+      <!--    {/each}-->
+      <!--  </ul>-->
+      <!--{/if}-->
     </FormSection>
   </form>
 </div>
