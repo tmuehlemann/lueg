@@ -80,3 +80,16 @@ export const movieToGenreRelations = relations(movieToGenre, ({ one }) => ({
     references: [genre.id],
   }),
 }));
+
+export const mediaFile = pgTable('mediafile', {
+  path: text('path').notNull().unique().primaryKey(),
+  scannedAt: timestamp('scanned_at').defaultNow().notNull(),
+  movieId: integer('movie_id'),
+});
+
+export const mediaFileRelations = relations(mediaFile, ({ one }) => ({
+  movie: one(movies, {
+    fields: [mediaFile.movieId],
+    references: [movies.id],
+  }),
+}));

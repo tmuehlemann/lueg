@@ -8,6 +8,8 @@ import { ConfigModule } from '@nestjs/config';
 import { MoviesModule } from './movies/movies.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { MetadataApisModule } from './metadata-apis/metadata-apis.module';
+import { MediaLibraryModule } from './media-library/media-library.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { join } from 'path';
       rootPath: 'static',
       serveRoot: '/static',
     }),
+    MetadataApisModule,
+    MediaLibraryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
