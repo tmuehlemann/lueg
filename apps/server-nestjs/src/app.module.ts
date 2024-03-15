@@ -10,6 +10,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MetadataApisModule } from './metadata-apis/metadata-apis.module';
 import { MediaLibraryModule } from './media-library/media-library.module';
+import { MetadataAssetsModule } from './metadata-assets/metadata-assets.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MediaLibraryModule } from './media-library/media-library.module';
     }),
     MetadataApisModule,
     MediaLibraryModule,
+    MetadataAssetsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -7,6 +7,8 @@ import { basename } from 'path';
 import { MediaFilesService } from '../media-library/media-files/media-files.service';
 import { TmdbMovie, TmdbQuery } from '../metadata-apis/tmdb/tmdb.schema';
 import { TmdbService } from '../metadata-apis/tmdb/tmdb.service';
+import { MetadataAssetsService } from '../metadata-assets/metadata-assets.service';
+import { eq } from 'drizzle-orm';
 
 @Injectable()
 export class MoviesService {
@@ -16,6 +18,7 @@ export class MoviesService {
     private mediaLibraryScanner: MediaLibraryScannerService,
     private mediaFilesService: MediaFilesService,
     private tmdbService: TmdbService,
+    private metadataAssets: MetadataAssetsService,
   ) {}
 
   async list() {
@@ -29,7 +32,41 @@ export class MoviesService {
     const mediaFiles = await this.mediaFilesService.findMissingMovie();
 
     for (const mediaFile of mediaFiles) {
-      await this.createMovieFromMediaFile(mediaFile);
+      let movie;
+      try {
+        movie = await this.createMovieFromMediaFile(mediaFile);
+      } catch (e) {
+        this.logger.warn('could not create movie', e);
+      }
+
+      if (movie) {
+        let values: { backdropPath?: string; posterPath?: string } = {};
+
+        if (movie.backdropPath) {
+          values.backdropPath =
+            'local:' +
+            (await this.metadataAssets.downloadBackdrops(
+              'https://image.tmdb.org/t/p/original' + movie.backdropPath,
+              movie.title,
+            ));
+        }
+
+        if (movie.posterPath) {
+          values.posterPath =
+            'local:' +
+            (await this.metadataAssets.downloadPoster(
+              'https://image.tmdb.org/t/p/original' + movie.posterPath,
+              movie.title,
+            ));
+        }
+
+        if (Object.keys(values).length > 0) {
+          await this.db
+            .update(schema.movies)
+            .set(values)
+            .where(eq(schema.movies.id, movie.id));
+        }
+      }
     }
   }
 
@@ -39,7 +76,6 @@ export class MoviesService {
     //    - resize files
     // - use transaction
     // - inform user via websockets
-    // -
 
     const movieId = await this.parseAndIdentifyMoviePath(mediaFile.path);
 
@@ -50,7 +86,8 @@ export class MoviesService {
 
     const metadata = await this.tmdbService.getMovieDetails(movieId);
     const movie = await this.create(metadata);
-    this.mediaFilesService.linkToMovie(mediaFile, movie);
+    await this.mediaFilesService.linkToMovie(mediaFile, movie);
+    return movie;
   }
 
   /** parseAndIdentifyMoviePath
@@ -129,6 +166,15 @@ export class MoviesService {
       })
       .returning();
 
-    return resp[0];
+    const movie = resp[0];
+
+    this.db.insert(schema.movieToGenre).values(
+      metadata.genres.map((genre) => ({
+        movieId: movie.id,
+        genreId: genre.id,
+      })),
+    );
+
+    return movie;
   }
 }
