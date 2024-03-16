@@ -93,3 +93,8 @@ export const mediaFileRelations = relations(mediaFile, ({ one }) => ({
     references: [movies.id],
   }),
 }));
+
+export const moviesRelations = relations(movies, ({ many }) => ({
+  mediaFiles: many(mediaFile),
+  movieToGenre: many(movieToGenre),
+}));

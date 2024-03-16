@@ -6,6 +6,8 @@
   import { formatTime } from "$lib/helper/formatters";
   import Detail from "$lib/components/film/Detail.svelte";
   import Pill from "$lib/components/film/Pill.svelte";
+  import Poster from "$lib/components/ui/Poster.svelte";
+  import Backdrop from "$lib/components/ui/Backdrop.svelte";
 
   export let data;
 
@@ -13,7 +15,7 @@
   $: movie = data.movie;
 
   $: {
-    console.log(movie);
+    console.log("movie is", movie);
     applyMovieColors(movie);
   }
 
@@ -51,16 +53,16 @@
   }
 </script>
 
-<div class="text-foreground bg-background z-0 min-h-full pb-[8vmin]">
+<div class="z-0 min-h-full bg-background pb-[8vmin] text-foreground">
   <!--  backdrop -->
   <div class="absolute inset-0 z-[1] h-screen">
     <div class="gradient-mask absolute inset-0 z-10 backdrop-blur-md"></div>
     <div
-      class="to- via-background/80 to-background absolute inset-0 bg-gradient-to-b from-transparent"
+      class="to- absolute inset-0 bg-gradient-to-b from-transparent via-background/80 to-background"
     ></div>
-    <img
+    <Backdrop
       class="h-full w-full object-cover"
-      src="/metadata/backdrops/{movie.backdropPath}"
+      src={movie.backdropPath}
       alt="backdrop"
     />
   </div>
@@ -70,9 +72,11 @@
       style:view-transition-name="poster-{movie.id}"
       class="mt-[20vmin] max-w-[300px] overflow-hidden rounded-xl"
     >
-      <img
-        src="/metadata/posters/{movie.posterPath}"
-        alt="{movie.title} poster"
+      <Poster
+        size="original"
+        class="h-auto"
+        src={movie.posterPath}
+        alt={movie.title}
       />
     </div>
 
@@ -80,7 +84,7 @@
       <h1 class="pb-4 text-4xl">
         {movie.title}
       </h1>
-      <h2 class="text-primary pb-4 text-xl">
+      <h2 class="pb-4 text-xl text-primary">
         <span>
           ({movie.releaseDate.getFullYear()})
         </span>
@@ -115,12 +119,12 @@
         </p>
 
         <div class="pb-4">
-          {#each movie.fileUploads as fileUpload}
-            <Button href="/watch/{fileUpload.id}" --fg="var(--primary)">
+          {#each movie.mediaFiles as mediaFile}
+            <Button href="/watch/{mediaFile.id}" --fg="var(--primary)">
               <Play size={18} />
               Watch
-              {#if movie.fileUploads.length > 1}
-                {fileUpload.path}
+              {#if movie.mediaFiles.length > 1}
+                {mediaFile.path}
               {/if}
             </Button>
           {/each}

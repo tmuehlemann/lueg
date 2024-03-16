@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { DrizzleAsyncProvider } from '../drizzle/drizzle.provider';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js/index';
 import * as schema from '../drizzle/schema';
@@ -27,7 +27,34 @@ export class MoviesService {
     return movies;
   }
 
+  async getMovie(id: number) {
+    const movie = await this.db.query.movies.findFirst({
+      where: eq(schema.movies.id, id),
+      with: {
+        movieToGenre: {
+          with: {
+            genre: true,
+          },
+        },
+        mediaFiles: true,
+      },
+    });
+
+    if (!movie) {
+      throw new NotFoundException();
+    }
+
+    const { movieToGenre, ...movieDto } = movie;
+
+    return {
+      ...movieDto,
+      genres: movieToGenre.map((mtg) => mtg.genre),
+    };
+  }
+
   async syncWithMediaLibrary() {
+    this.logger.log('syncing with media library');
+
     await this.mediaFilesService.index();
     const mediaFiles = await this.mediaFilesService.findMissingMovie();
 
@@ -72,8 +99,6 @@ export class MoviesService {
 
   private async createMovieFromMediaFile(mediaFile: { path: string }) {
     // todo:
-    // - download poster/backdrop
-    //    - resize files
     // - use transaction
     // - inform user via websockets
 
@@ -168,7 +193,7 @@ export class MoviesService {
 
     const movie = resp[0];
 
-    this.db.insert(schema.movieToGenre).values(
+    await this.db.insert(schema.movieToGenre).values(
       metadata.genres.map((genre) => ({
         movieId: movie.id,
         genreId: genre.id,
