@@ -82,7 +82,8 @@ export const movieToGenreRelations = relations(movieToGenre, ({ one }) => ({
 }));
 
 export const mediaFile = pgTable('mediafile', {
-  path: text('path').notNull().unique().primaryKey(),
+  id: serial('id').primaryKey(),
+  path: text('path').notNull().unique(),
   scannedAt: timestamp('scanned_at').defaultNow().notNull(),
   movieId: integer('movie_id'),
 });

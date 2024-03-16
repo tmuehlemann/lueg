@@ -6,14 +6,13 @@
 
   export let data;
 
-  let file;
   let videoElm: HTMLVideoElement;
   let progressbarElm: HTMLElement;
 
   let timeElapsed = 0;
   let duration = 0;
 
-  $: file = data.fileUpload;
+  $: file = data.mediaFile;
 
   $: console.log(data);
 
@@ -101,5 +100,5 @@
 </div>
 
 <video class="h-full w-full bg-black" on:click={toggle} bind:this={videoElm}>
-  <source src="/library/{file.path}" />
+  <source src={file.path} />
 </video>

@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { MediaLibraryScannerService } from '../media-library-scanner/media-library-scanner.service';
 import { DrizzleAsyncProvider } from '../../drizzle/drizzle.provider';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js/index';
@@ -62,5 +62,22 @@ export class MediaFilesService {
       .update(schema.mediaFile)
       .set({ movieId: movie.id })
       .where(eq(mediaFile.path, file.path));
+  }
+
+  async getMediaFile(id: number) {
+    const mediaFile = await this.db.query.mediaFile.findFirst({
+      where: eq(schema.mediaFile.id, id),
+      with: {
+        movie: true,
+      },
+    });
+
+    if (!mediaFile) {
+      throw new NotFoundException();
+    }
+
+    mediaFile.path = 'http://localhost:3000/static/library/' + mediaFile.path;
+
+    return mediaFile;
   }
 }

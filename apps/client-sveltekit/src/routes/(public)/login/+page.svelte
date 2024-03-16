@@ -5,7 +5,7 @@
   import FormField from "$lib/components/ui/form/FormField.svelte";
   import FormSection from "$lib/components/ui/form/FormSection.svelte";
 
-  import { login } from "$lib/service/auth";
+  import { auth } from "$lib/service/auth";
   import { goto } from "$app/navigation";
 
   let name = "";
@@ -15,7 +15,7 @@
 <div class="m-auto mt-24 max-w-[400px]">
   <form
     on:submit|preventDefault={async () => {
-      const success = await login(name, password);
+      const success = await auth.login(name, password);
       if (success) {
         goto("/");
       }

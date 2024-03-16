@@ -8,6 +8,7 @@ export type ApiFetchOptions = {
   body?: string | object;
   headers?: Record<string, string>;
   authenticated?: boolean;
+  emptyResponse?: boolean;
 };
 
 export async function apiFetch(path: string, options?: ApiFetchOptions) {
@@ -44,5 +45,15 @@ export async function apiFetch(path: string, options?: ApiFetchOptions) {
     throw new Error();
   }
 
-  return await resp.json();
+  // only return json if there is content
+
+  try {
+    return await resp.json();
+  } catch (e) {
+    if (options?.emptyResponse) {
+      return;
+    }
+
+    throw e;
+  }
 }

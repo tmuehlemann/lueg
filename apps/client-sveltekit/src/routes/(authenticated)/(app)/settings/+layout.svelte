@@ -11,7 +11,7 @@
     Shield,
     SwatchBook,
   } from "lucide-svelte";
-  import { logout } from "$lib/service/auth";
+  import { auth } from "$lib/service/auth";
   export let data: PageData;
 </script>
 
@@ -30,7 +30,11 @@
       <Button href="/settings/media"><Book strokeWidth="1.2" /> Media</Button>
       <Button href="/settings/admin"><Shield strokeWidth="1.2" /> Admin</Button>
       <Divider />
-      <Button --foreground="255 25 0" class="text-red-500" on:click={logout}>
+      <Button
+        --foreground="255 25 0"
+        class="text-red-500"
+        on:click={auth.logout}
+      >
         <LogOut strokeWidth="1.2" /> Sign out
       </Button>
     </div>
