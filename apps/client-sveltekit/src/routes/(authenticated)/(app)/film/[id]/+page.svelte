@@ -1,6 +1,6 @@
 <script lang="ts">
   import Button from "$lib/components/ui/form/Button.svelte";
-  import { Play } from "lucide-svelte";
+  import { Pencil, Play } from "lucide-svelte";
   import { onMount } from "svelte";
   import tinycolor from "tinycolor2";
   import { formatTime } from "$lib/helper/formatters";
@@ -81,9 +81,16 @@
     </div>
 
     <div class="pt-[30vmin]">
-      <h1 class="pb-4 text-4xl">
-        {movie.title}
-      </h1>
+      <div class="flex content-center justify-between">
+        <h1 class="pb-4 text-4xl">
+          {movie.title}
+        </h1>
+
+        <Button variant="ghost">
+          <Pencil strokeWidth="1.2" size="18" />
+        </Button>
+      </div>
+
       <h2 class="pb-4 text-xl text-primary">
         <span>
           ({movie.releaseDate.getFullYear()})
