@@ -95,3 +95,41 @@ export const querySchema = z.object({
 });
 
 export type TmdbQuery = z.infer<typeof querySchema>;
+
+export const imagesSchema = z.object({
+  backdrops: z.array(
+    z.object({
+      file_path: z.string(),
+      aspect_ratio: z.number(),
+      width: z.number(),
+      height: z.number(),
+      iso_639_1: z.string().nullable(),
+      vote_average: z.number(),
+      vote_count: z.number(),
+    }),
+  ),
+  posters: z.array(
+    z.object({
+      file_path: z.string(),
+      aspect_ratio: z.number(),
+      width: z.number(),
+      height: z.number(),
+      iso_639_1: z.string().nullable(),
+      vote_average: z.number(),
+      vote_count: z.number(),
+    }),
+  ),
+  logos: z.array(
+    z.object({
+      file_path: z.string(),
+      aspect_ratio: z.number(),
+      width: z.number(),
+      height: z.number(),
+      iso_639_1: z.string().nullable(),
+      vote_average: z.number(),
+      vote_count: z.number(),
+    }),
+  ),
+});
+
+export type TmdbImages = z.infer<typeof imagesSchema>;

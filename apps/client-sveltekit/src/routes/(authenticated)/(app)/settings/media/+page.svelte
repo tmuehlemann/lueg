@@ -2,15 +2,13 @@
   import { enhance } from "$app/forms";
   import Button from "$lib/components/ui/form/Button.svelte";
   import Heading from "$lib/components/settings/Heading.svelte";
-  import { apiFetch } from "$lib/service/service";
+  import { syncMovies } from "$lib/service/api";
   let indexingMovies = false;
 
   async function syncLibraryWithFilesystem() {
     indexingMovies = true;
-    await apiFetch("/movies/sync", {
-      authenticated: true,
-      emptyResponse: true,
-    });
+    await syncMovies();
+
     indexingMovies = false;
   }
 </script>

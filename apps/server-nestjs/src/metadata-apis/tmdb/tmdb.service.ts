@@ -1,11 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import {
   genreListSchema,
+  imagesSchema,
   movieSchema,
   querySchema,
   TmdbGenre,
   TmdbMovie,
   TmdbQuery,
+  TmdbImages,
 } from './tmdb.schema';
 import { ConfigService } from '@nestjs/config';
 
@@ -27,6 +29,13 @@ export class TmdbService {
     const response = await this.fetch(`/movie/${id}`);
 
     return movieSchema.parse(response);
+  }
+
+  async getMovieImages(id: number): Promise<TmdbImages> {
+    const response = await this.fetch(
+      `/movie/${id}/images?include_image_language=en%2Cde%2Cnull`,
+    );
+    return imagesSchema.parse(response);
   }
 
   async queryMovie(query: string, year?: number): Promise<TmdbQuery> {

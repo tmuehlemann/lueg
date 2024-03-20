@@ -8,10 +8,11 @@
   import Pill from "$lib/components/film/Pill.svelte";
   import Poster from "$lib/components/ui/Poster.svelte";
   import Backdrop from "$lib/components/ui/Backdrop.svelte";
+  import ImageModal from "$lib/components/film/ImageModal.svelte";
+  import { getMovie } from "$lib/service/api.js";
 
   export let data;
 
-  let movie;
   $: movie = data.movie;
 
   $: {
@@ -51,14 +52,22 @@
       .slice(0, 3) // remove alpha
       .join(" "); // convert to string
   }
+
+  let showImageModal = false;
+
+  async function reloadMovie() {
+    movie = await getMovie(movie.id);
+  }
 </script>
 
-<div class="z-0 min-h-full bg-background pb-[8vmin] text-foreground">
+<ImageModal bind:show={showImageModal} {movie} on:close={reloadMovie} />
+
+<div class="bg-background text-foreground z-0 min-h-full pb-[8vmin]">
   <!--  backdrop -->
   <div class="absolute inset-0 z-[1] h-screen">
     <div class="gradient-mask absolute inset-0 z-10 backdrop-blur-md"></div>
     <div
-      class="to- absolute inset-0 bg-gradient-to-b from-transparent via-background/80 to-background"
+      class="via-background/80 to-background absolute inset-0 bg-gradient-to-b from-transparent"
     ></div>
     <Backdrop
       class="h-full w-full object-cover"
@@ -67,31 +76,32 @@
     />
   </div>
 
-  <main class="container relative z-10 m-auto flex content-center gap-12">
+  <main class="container relative z-10 m-auto flex gap-12">
     <div
       style:view-transition-name="poster-{movie.id}"
-      class="mt-[20vmin] max-w-[300px] overflow-hidden rounded-xl"
+      class="group relative mt-auto max-w-[300px] overflow-hidden rounded-xl"
     >
       <Poster
+        class="aspect-poster h-auto"
         size="original"
-        class="h-auto"
         src={movie.posterPath}
         alt={movie.title}
       />
+      <Button
+        class="bg-background/20 hover:bg-background/40 active:bg-background/40 text-foreground absolute bottom-2 right-2 hidden backdrop-blur-sm group-hover:block"
+        variant="ghost"
+        on:click={() => (showImageModal = true)}
+      >
+        <Pencil strokeWidth="1.2" size="18" />
+      </Button>
     </div>
 
     <div class="pt-[30vmin]">
-      <div class="flex content-center justify-between">
-        <h1 class="pb-4 text-4xl">
-          {movie.title}
-        </h1>
+      <h1 class="pb-4 text-4xl">
+        {movie.title}
+      </h1>
 
-        <Button variant="ghost">
-          <Pencil strokeWidth="1.2" size="18" />
-        </Button>
-      </div>
-
-      <h2 class="pb-4 text-xl text-primary">
+      <h2 class="text-primary pb-4 text-xl">
         <span>
           ({movie.releaseDate.getFullYear()})
         </span>
@@ -163,6 +173,15 @@
 
     <h3 class="mb-2 mt-8 font-bold">links</h3>
     <ul class="flex gap-2 pb-4">
+      <Pill>
+        <a
+          class="underline"
+          target="_blank"
+          href="https://letterboxd.com/tmdb/{movie.tmdbId}"
+        >
+          letterboxd
+        </a>
+      </Pill>
       <Pill>
         <a
           class="underline"

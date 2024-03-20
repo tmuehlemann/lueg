@@ -1,17 +1,15 @@
+import { getMovie } from "$lib/service/api";
 import type { PageLoad } from "./$types";
-import { error, fail, redirect } from "@sveltejs/kit";
-import { apiFetch } from "$lib/service/service";
+import { error } from "@sveltejs/kit";
 
 export const load = (async ({ params }) => {
   let movie;
 
   try {
-    movie = await apiFetch(`/movies/${params.id}`, { authenticated: true });
+    movie = await getMovie(params.id);
   } catch {
     error(404, "Movie not found");
   }
-
-  movie.releaseDate = new Date(movie.releaseDate);
 
   return {
     movie,

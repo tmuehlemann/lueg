@@ -1,20 +1,18 @@
 import type { PageLoad } from "./$types";
-import { fail, redirect } from "@sveltejs/kit";
-import { apiFetch } from "$lib/service/service";
+import { redirect } from "@sveltejs/kit";
+import { getMovies } from "$lib/service/api";
 
 export const load = (async () => {
-  let user, movies;
+  let movies;
 
   try {
-    user = await apiFetch("/auth/profile", { authenticated: true });
-    movies = await apiFetch("/movies", { authenticated: true });
+    movies = await getMovies();
   } catch {
     console.log("failed to fetch");
     redirect(302, "/login");
   }
 
   return {
-    user,
     movies,
   };
 }) satisfies PageLoad;

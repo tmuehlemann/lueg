@@ -8,7 +8,7 @@ import { MediaFilesService } from '../media-library/media-files/media-files.serv
 import { TmdbMovie, TmdbQuery } from '../metadata-apis/tmdb/tmdb.schema';
 import { TmdbService } from '../metadata-apis/tmdb/tmdb.service';
 import { MetadataAssetsService } from '../metadata-assets/metadata-assets.service';
-import { eq } from 'drizzle-orm';
+import { InferInsertModel, eq } from 'drizzle-orm';
 
 @Injectable()
 export class MoviesService {
@@ -52,6 +52,63 @@ export class MoviesService {
     };
   }
 
+  async updateMovie(
+    movieId: number,
+    partialMovie: Partial<InferInsertModel<typeof schema.movies>>,
+  ) {
+    const updated = await this.db
+      .update(schema.movies)
+      .set({ ...partialMovie, updatedAt: new Date() })
+      .where(eq(schema.movies.id, movieId))
+      .returning();
+
+    console.log('updated', partialMovie, updated[0]);
+
+    if (partialMovie.backdropPath || partialMovie.posterPath) {
+      await this.updateMetadataAssets({
+        ...partialMovie,
+        id: updated[0].id,
+        title: updated[0].title,
+      });
+    }
+
+    return updated[0];
+  }
+
+  async updateMetadataAssets(movie: {
+    id: number;
+    backdropPath?: string | null;
+    posterPath?: string | null;
+    title: string;
+  }) {
+    const values: { backdropPath?: string; posterPath?: string } = {};
+
+    if (movie.backdropPath) {
+      values.backdropPath =
+        'local:' +
+        (await this.metadataAssets.downloadBackdrops(
+          'https://image.tmdb.org/t/p/original' + movie.backdropPath,
+          movie.title,
+        ));
+    }
+
+    if (movie.posterPath) {
+      values.posterPath =
+        'local:' +
+        (await this.metadataAssets.downloadPoster(
+          'https://image.tmdb.org/t/p/original' + movie.posterPath,
+          movie.title,
+        ));
+    }
+
+    if (Object.keys(values).length > 0) {
+      await this.db
+        .update(schema.movies)
+        .set(values)
+        .where(eq(schema.movies.id, movie.id));
+    }
+  }
+
   async syncWithMediaLibrary() {
     this.logger.log('syncing with media library');
 
@@ -67,32 +124,7 @@ export class MoviesService {
       }
 
       if (movie) {
-        let values: { backdropPath?: string; posterPath?: string } = {};
-
-        if (movie.backdropPath) {
-          values.backdropPath =
-            'local:' +
-            (await this.metadataAssets.downloadBackdrops(
-              'https://image.tmdb.org/t/p/original' + movie.backdropPath,
-              movie.title,
-            ));
-        }
-
-        if (movie.posterPath) {
-          values.posterPath =
-            'local:' +
-            (await this.metadataAssets.downloadPoster(
-              'https://image.tmdb.org/t/p/original' + movie.posterPath,
-              movie.title,
-            ));
-        }
-
-        if (Object.keys(values).length > 0) {
-          await this.db
-            .update(schema.movies)
-            .set(values)
-            .where(eq(schema.movies.id, movie.id));
-        }
+        await this.updateMetadataAssets(movie);
       }
     }
   }
@@ -201,5 +233,10 @@ export class MoviesService {
     );
 
     return movie;
+  }
+
+  async getMovieImages(parsedId: number): Promise<unknown> {
+    const movie = await this.getMovie(parsedId);
+    return await this.tmdbService.getMovieImages(movie.tmdbId);
   }
 }
